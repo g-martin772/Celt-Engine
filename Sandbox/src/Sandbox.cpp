@@ -1,8 +1,11 @@
-﻿
-void test();
+﻿#include "Core/Entrypoint.h"
 
-int main(int argc, char** argv)
+class Sandbox : public CeltEngine::Application
 {
-    test();
-    return 0;
+    
+};
+
+CeltEngine::Application* CreateApplication()
+{
+    return new Sandbox();
 }

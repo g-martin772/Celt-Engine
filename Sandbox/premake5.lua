@@ -17,7 +17,8 @@
     }
     
     includedirs {
-        "src"
+        "src",
+        "%{wks.location}/Engine/src",
     }
     
     links {
