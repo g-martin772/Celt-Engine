@@ -1,0 +1,12 @@
+﻿.idea/
+.vs/
+.vscode/
+bin/
+obj/
+__pycache__/
+
+
+*.sln
+*.vcxproj
+*.filters
+*.spv
