@@ -1,4 +1,4 @@
-﻿workspace "Fusion"
+﻿workspace "Celt-Engine"
 
 architecture "x86_64"
 configurations { "Debug", "Release" }
