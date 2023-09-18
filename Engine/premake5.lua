@@ -21,11 +21,12 @@
     }
     
     includedirs {
-        "src"
+        "src",
+        "%{wks.location}/Dependencies/glfw/include"
     }
     
     links {
-        
+        "glfw"
     }
     
     filter "system:windows"

@@ -15,11 +15,13 @@ namespace CeltEngine
     Application::Application(const ApplicationConfig& config)
     {
         s_Application = this;
+
+        WindowConfig windowConfig;
+        m_Window = std::make_shared<Window>(windowConfig);
     }
 
     Application::~Application()
     {
-        ShutDown();
         s_Application = nullptr;
     }
 
@@ -35,6 +37,8 @@ namespace CeltEngine
                     m_EventQueue.pop();
                 }
             }
+
+            m_Window->OnUpdate();
             
             OnUpdate();
         }
@@ -54,6 +58,7 @@ namespace CeltEngine
     {
         m_Running = false;
         OnShutDown();
+        m_Window.reset();
     }
 
     void Application::AddEventCallback(const std::function<bool(Event&)>& callback)
