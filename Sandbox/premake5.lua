@@ -22,7 +22,8 @@
     }
     
     links {
-        "CeltEngine"
+        "CeltEngine",
+        "glfw"
     }
     
     filter "system:windows"
