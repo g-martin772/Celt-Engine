@@ -37,6 +37,11 @@
         defines {
             "CE_LINUX"
         }
+        
+        links {
+          "dl",
+          "pthread"
+        }
 
     filter "configurations:Debug"
         defines { "CE_DEBUG" }
