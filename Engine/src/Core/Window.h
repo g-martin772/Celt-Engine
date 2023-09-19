@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Core.h"
 #include "Event.h"
 
 typedef struct GLFWwindow GLFWwindow;
@@ -24,5 +25,4 @@ namespace CeltEngine
         WindowConfig m_Config;
         GLFWwindow* m_Window;
     };
-    
 }

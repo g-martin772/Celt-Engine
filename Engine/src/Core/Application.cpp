@@ -46,6 +46,12 @@ namespace CeltEngine
 
     void Application::OnEvent(Event& event)
     {
+        if (event.Type == EventType::WindowClose)
+        {
+            ShutDown();
+            return;
+        }
+        
         for (const auto& fn : m_Callbacks)
         {
             if (event.Handled)
@@ -58,7 +64,6 @@ namespace CeltEngine
     {
         m_Running = false;
         OnShutDown();
-        m_Window.reset();
     }
 
     void Application::AddEventCallback(const std::function<bool(Event&)>& callback)
