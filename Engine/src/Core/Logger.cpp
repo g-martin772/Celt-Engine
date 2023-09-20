@@ -28,10 +28,15 @@ namespace CeltEngine
         s_CoreLogger = nullptr;
     }
 
-    Logger::Logger(const std::string& filename): m_LogFile(filename), m_Running(true)
+    Logger::Logger(const std::string& filename): m_Running(true)
     {
         m_LogFile.open(filename, std::ios::out | std::ios::app);
         m_ConsumerThread = std::thread(&Logger::LogConsumer, this);
+
+        if(!m_LogFile)
+        {
+            printf("Failed to open log file");
+        }
     }
 
     Logger::~Logger()
@@ -76,6 +81,8 @@ namespace CeltEngine
 
                 lock.lock();
             }
+
+            m_LogFile.flush();
         }
     }
 

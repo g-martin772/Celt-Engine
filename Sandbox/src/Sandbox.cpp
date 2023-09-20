@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 
 #include "Core/Entrypoint.h"
+#include "Core/Logger.h"
 
 class Sandbox : public CeltEngine::Application
 {
@@ -14,7 +15,6 @@ public:
 private:
     void OnUpdate() override
     {
-
     }
 
     void OnShutDown() override
