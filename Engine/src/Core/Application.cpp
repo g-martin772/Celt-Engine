@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "Event.h"
+#include "Logger.h"
 #include "Renderer/Renderer.h"
 
 namespace CeltEngine
@@ -17,8 +18,10 @@ namespace CeltEngine
     {
         s_Application = this;
 
+        Logger::Init("latest.log");
+        
         Renderer::PickRenderApi(RenderAPI::OpenGL);
-
+        
         WindowConfig windowConfig;
         m_Window = std::make_shared<Window>(windowConfig);
 
@@ -71,6 +74,7 @@ namespace CeltEngine
         OnShutDown();
 
         Renderer::Shutdown();
+        Logger::Shutdown();
     }
 
     void Application::AddEventCallback(const std::function<bool(Event&)>& callback)

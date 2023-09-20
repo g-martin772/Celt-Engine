@@ -8,22 +8,10 @@ public:
     explicit Sandbox(const CeltEngine::ApplicationConfig& config)
         : Application(config)
     {
-        AddEventCallback(OnTestEvent);
         
-        CeltEngine::Event e1;
-        DispatchEvent<CeltEngine::Event>(e1);
-
-        CeltEngine::Event e2;
-        DispatchEvent<CeltEngine::Event, true>(e2);
     }
 
 private:
-    static bool OnTestEvent(CeltEngine::Event& event)
-    {
-        std::cout << "test" << std::endl;
-        return true;
-    }
-    
     void OnUpdate() override
     {
 
