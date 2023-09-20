@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Application.h"
+#include "Renderer/Renderer.h"
 
 void glfwSetWindowSizeCallback(GLFWwindow* window, int width, int height)
 {
@@ -72,10 +73,14 @@ namespace CeltEngine
         glfwSetFramebufferSizeCallback(m_Window, glfwFramebufferSizeCallback);
 
         glfwMakeContextCurrent(m_Window);
-        
-        if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-            std::cout << "Failed to load OpenGL!" << std::endl;
-        std::cout << "Loading OpenGL version " << GLVersion.major << "." << GLVersion.minor << std::endl;
+        glfwSwapInterval(config.VSync);
+
+        if (Renderer::GetRenderApi() == RenderAPI::OpenGL)
+        {
+            if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+                std::cout << "Failed to load OpenGL!" << std::endl;
+            std::cout << "Loading OpenGL version " << GLVersion.major << "." << GLVersion.minor << std::endl;
+        }
     }
 
     Window::~Window()
