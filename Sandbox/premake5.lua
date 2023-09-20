@@ -23,7 +23,8 @@
     
     links {
         "CeltEngine",
-        "glfw"
+        "glfw",
+        "glad"
     }
     
     filter "system:windows"

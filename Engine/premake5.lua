@@ -22,11 +22,13 @@
     
     includedirs {
         "src",
-        "%{wks.location}/Dependencies/glfw/include"
+        "%{wks.location}/Dependencies/glfw/include",
+        "%{wks.location}/Dependencies/glad/include"
     }
     
     links {
-        "glfw"
+        "glfw",
+        "glad"
     }
     
     filter "system:windows"

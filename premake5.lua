@@ -14,4 +14,5 @@ include "Sandbox"
 
 group "Dependencies"
     include "Dependencies/glfw"
+    include "Dependencies/glad"
 group ""

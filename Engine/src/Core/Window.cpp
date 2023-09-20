@@ -1,7 +1,7 @@
 ﻿#include "cepch.h"
 #include "Window.h"
 
-#define GLFW_INCLUDE_NONE
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "Application.h"
@@ -53,6 +53,10 @@ namespace CeltEngine
         if(!glfwInit())
             CE_BREAK;
 
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        
         m_Window = glfwCreateWindow(config.Width, config.Height, config.Name.c_str(), nullptr, nullptr);
 
         if(!m_Window)
@@ -68,6 +72,10 @@ namespace CeltEngine
         glfwSetFramebufferSizeCallback(m_Window, glfwFramebufferSizeCallback);
 
         glfwMakeContextCurrent(m_Window);
+        
+        if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+            std::cout << "Failed to load OpenGL!" << std::endl;
+        std::cout << "Loading OpenGL version " << GLVersion.major << "." << GLVersion.minor << std::endl;
     }
 
     Window::~Window()
