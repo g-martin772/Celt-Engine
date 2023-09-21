@@ -80,7 +80,7 @@ namespace CeltEngine
         {
             if(!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
                 CE_FATAL("Failed to load OpenGL!");
-            CE_INFO("Loading OpenGL version {0}.{1}", GLVersion.major, GLVersion.minor);
+            CE_INFO("Loading OpenGL version %d.%d", GLVersion.major, GLVersion.minor);
         }
     }
 

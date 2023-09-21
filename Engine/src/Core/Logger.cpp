@@ -1,6 +1,8 @@
 ﻿#include "cepch.h"
 #include "Logger.h"
 
+#include <cstdarg>
+
 namespace CeltEngine
 {
     static Logger* s_CoreLogger;
@@ -47,10 +49,24 @@ namespace CeltEngine
         m_LogFile.close();
     }
 
-    void Logger::Log(LogLevel level, std::string_view message)
+    void Logger::Log(LogLevel level, const char* message, ...)
     {
         std::lock_guard<std::mutex> lock(m_LogMutex);
-        m_LogQueue.push(std::make_pair(level, message));
+        char buffer[8000] = {};
+
+        va_list args; 
+        va_start(args, message);
+
+        const int result = vsnprintf(buffer, sizeof(buffer), message, args);
+
+        va_end(args);
+        
+        if (!(result >= 0 && static_cast<std::size_t>(result) < sizeof(buffer))) {
+            std::cout << "Formatting error or buffer too small." << std::endl;
+        }
+
+        std::string formattedString(buffer);
+        m_LogQueue.push(std::make_pair(level, formattedString));
         m_Condition.notify_one();
     }
 
@@ -77,7 +93,7 @@ namespace CeltEngine
                 std::cout << logStream.str();
 
                 // Write to the log file
-                m_LogFile << logStream.str();
+                m_LogFile << logStream.str() << std::endl;
 
                 lock.lock();
             }
