@@ -20,10 +20,13 @@
         "_CRT_SECURE_NO_WARNINGS"
     }
     
+    vulkanSDK = os.getenv("VULKAN_SDK")
+    
     includedirs {
         "src",
         "%{wks.location}/Dependencies/glfw/include",
-        "%{wks.location}/Dependencies/glad/include"
+        "%{wks.location}/Dependencies/glad/include",
+        vulkanSDK .. "/Include"
     }
     
     links {
@@ -47,8 +50,19 @@
         defines { "CE_DEBUG" }
         runtime "Debug"
         symbols "On"
+        
+        links {
+            vulkanSDK .. "/Lib/vulkan-1.lib",
+            vulkanSDK .. "/Lib/shaderc_combined.lib"
+        }
     
     filter "configurations:Release"
         defines { "CE_RELEASE" }
         runtime "Release"
         optimize "On"
+        
+        links {
+            vulkanSDK .. "/Lib/vulkan-1.lib",
+            vulkanSDK .. "/Lib/shaderc_combinedd.lib"
+        }
+        

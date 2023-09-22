@@ -48,8 +48,18 @@
         defines { "CE_DEBUG" }
         runtime "Debug"
         symbols "On"
+        
+        links {
+            vulkanSDK .. "/Lib/vulkan-1.lib",
+            vulkanSDK .. "/Lib/shaderc_combined.lib"
+        }
     
     filter "configurations:Release"
         defines { "CE_RELEASE" }
         runtime "Release"
         optimize "On"
+        
+        links {
+            vulkanSDK .. "/Lib/vulkan-1.lib",
+            vulkanSDK .. "/Lib/shaderc_combinedd.lib"
+        }
