@@ -20,7 +20,7 @@ namespace CeltEngine
 
         Logger::Init("latest.log");
         
-        Renderer::PickRenderApi(RenderAPI::OpenGL);
+        Renderer::PickRenderApi(RenderAPI::Vulkan);
         
         WindowConfig windowConfig;
         m_Window = std::make_shared<Window>(windowConfig);

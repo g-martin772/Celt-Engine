@@ -6,5 +6,13 @@
 
 namespace CeltEngine
 {
-    
+    void VulkanApi::Init()
+    {
+        m_Instance.Init();
+    }
+
+    void VulkanApi::Shutdown()
+    {
+        m_Instance.Shutdown();
+    }
 }

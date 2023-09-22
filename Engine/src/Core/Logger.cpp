@@ -11,7 +11,7 @@ namespace CeltEngine
         switch (level) {
             case LogLevel::FATAL: return "FATAL";
             case LogLevel::ERROR: return "ERROR";
-            case LogLevel::WARNING: return "WARNING";
+            case LogLevel::WARN: return "WARNING";
             case LogLevel::INFO: return "INFO";
             case LogLevel::DEBUG: return "DEBUG";
             case LogLevel::TRACE: return "TRACE";

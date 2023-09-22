@@ -9,6 +9,13 @@ namespace CeltEngine
         DirectX = 2,
         Vulkan = 3
     };
+
+    class IRenderApi
+    {
+    public:
+        virtual void Init() = 0;
+        virtual void Shutdown() = 0;
+    };
     
     class Renderer
     {

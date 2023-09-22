@@ -8,7 +8,7 @@ namespace CeltEngine
     enum class LogLevel {
         FATAL,
         ERROR,
-        WARNING,
+        WARN,
         INFO,
         DEBUG,
         TRACE

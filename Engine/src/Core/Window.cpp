@@ -2,6 +2,7 @@
 #include "Window.h"
 
 #include <glad/glad.h>
+#define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
 #include "Application.h"
@@ -55,9 +56,17 @@ namespace CeltEngine
         if(!glfwInit())
             CE_BREAK;
 
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        if (Renderer::GetRenderApi() == RenderAPI::OpenGL)
+        {
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        }
+        else if (Renderer::GetRenderApi() == RenderAPI::Vulkan)
+        {
+            glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+            glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        }
         
         m_Window = glfwCreateWindow(config.Width, config.Height, config.Name.c_str(), nullptr, nullptr);
 
@@ -82,6 +91,10 @@ namespace CeltEngine
                 CE_FATAL("Failed to load OpenGL!");
             CE_INFO("Loading OpenGL version %d.%d", GLVersion.major, GLVersion.minor);
             CE_ASSERT(GLVersion.major >= 4);
+        }
+        else if (Renderer::GetRenderApi() == RenderAPI::Vulkan)
+        {
+            
         }
     }
 
