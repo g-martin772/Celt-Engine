@@ -6,6 +6,21 @@
 
 namespace CeltEngine
 {
+    static void AddQueueToCreateInfo(std::vector<vk::DeviceQueueCreateInfo>& queueInfos, uint32_t queueFamilyIndex) {
+        for (const auto& info : queueInfos) {
+            if (info.queueFamilyIndex == queueFamilyIndex) {
+                return;
+            }
+        }
+
+        vk::DeviceQueueCreateInfo queueCreateInfo = {};
+        queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
+        queueCreateInfo.queueCount = 1;
+        constexpr float queuePriority = 1.0f;
+        queueCreateInfo.pQueuePriorities = &queuePriority;
+        queueInfos.push_back(queueCreateInfo);
+    }
+    
     void VulkanDevice::Init(DeviceRequirements requirements, VulkanInstance* instance)
     {
         m_Instance = instance;
@@ -90,9 +105,43 @@ namespace CeltEngine
         CE_TRACE("\t Transfer: %d", m_QueueIndices.Transfer);
         CE_TRACE("\t Compute: %d", m_QueueIndices.Compute);
         CE_TRACE("\t Sparse: %d", m_QueueIndices.Sparse);
+
+        CE_ASSERT(m_QueueIndices.Graphics != -1);
+        CE_ASSERT(m_QueueIndices.Transfer != -1);
+        CE_ASSERT(m_QueueIndices.Compute != -1);
+        CE_ASSERT(m_QueueIndices.Sparse != -1);
+
+        std::vector<vk::DeviceQueueCreateInfo> deviceQueueInfos;
+        if(requirements.Graphics)
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Graphics);
+        if(requirements.Transfer)
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Transfer);
+        if(requirements.Compute)
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Compute);
+        if(requirements.Sparse)
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Sparse);
+
+        // Logical device
+        vk::DeviceCreateInfo deviceCreateInfo;
+        deviceCreateInfo.queueCreateInfoCount = deviceQueueInfos.size();
+        deviceCreateInfo.pQueueCreateInfos = deviceQueueInfos.data();
+
+        vk::PhysicalDeviceFeatures deviceFeatures;
+        deviceCreateInfo.pEnabledFeatures = &deviceFeatures;
+
+        // Set instance extensions on device level?
+
+        try {
+            m_Device = m_PhysicalDevice.createDevice(deviceCreateInfo);
+        } catch (const vk::SystemError& err) {
+            CE_ERROR("Failed to create logical device: %s", err.what());
+            CE_BREAK;
+        }
+        CE_TRACE("Created logical device: succesful");
     }
 
     void VulkanDevice::Shutdown()
     {
+        m_Device.destroy();
     }
 }
