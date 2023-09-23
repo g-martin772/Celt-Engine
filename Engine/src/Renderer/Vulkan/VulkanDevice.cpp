@@ -6,9 +6,11 @@
 
 namespace CeltEngine
 {
-    static void AddQueueToCreateInfo(std::vector<vk::DeviceQueueCreateInfo>& queueInfos, uint32_t queueFamilyIndex) {
-        for (const auto& info : queueInfos) {
-            if (info.queueFamilyIndex == queueFamilyIndex) {
+    static void AddQueueToCreateInfo(std::vector<vk::DeviceQueueCreateInfo>& queueInfos, uint32_t queueFamilyIndex, uint32_t* resultIndex)
+    {
+        for (uint32_t i = 0; i < queueInfos.size(); i++) {
+            if (queueInfos[i].queueFamilyIndex == queueFamilyIndex) {
+                *resultIndex = i;
                 return;
             }
         }
@@ -19,6 +21,7 @@ namespace CeltEngine
         constexpr float queuePriority = 1.0f;
         queueCreateInfo.pQueuePriorities = &queuePriority;
         queueInfos.push_back(queueCreateInfo);
+        *resultIndex = queueInfos.size() - 1;
     }
     
     void VulkanDevice::Init(DeviceRequirements requirements, VulkanInstance* instance)
@@ -100,11 +103,6 @@ namespace CeltEngine
 
         CE_ASSERT(m_PhysicalDevice);
         CE_INFO("Picked %s", m_PhysicalDevice.getProperties().deviceName);
-        CE_TRACE("Selected Queue indices:");
-        CE_TRACE("\t Graphics: %d", m_QueueIndices.Graphics);
-        CE_TRACE("\t Transfer: %d", m_QueueIndices.Transfer);
-        CE_TRACE("\t Compute: %d", m_QueueIndices.Compute);
-        CE_TRACE("\t Sparse: %d", m_QueueIndices.Sparse);
 
         CE_ASSERT(m_QueueIndices.Graphics != -1);
         CE_ASSERT(m_QueueIndices.Transfer != -1);
@@ -113,14 +111,20 @@ namespace CeltEngine
 
         std::vector<vk::DeviceQueueCreateInfo> deviceQueueInfos;
         if(requirements.Graphics)
-            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Graphics);
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Graphics, &m_GraphicsIndex);
         if(requirements.Transfer)
-            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Transfer);
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Transfer, &m_TransferIndex);
         if(requirements.Compute)
-            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Compute);
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Compute, &m_ComputeIndex);
         if(requirements.Sparse)
-            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Sparse);
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Sparse, &m_SparseIndex);
 
+        CE_TRACE("Selected Queue indices:");
+        CE_TRACE("\t Graphics: %d (%d)", m_QueueIndices.Graphics, m_GraphicsIndex);
+        CE_TRACE("\t Transfer: %d (%d)", m_QueueIndices.Transfer, m_TransferIndex);
+        CE_TRACE("\t Compute: %d (%d)", m_QueueIndices.Compute, m_ComputeIndex);
+        CE_TRACE("\t Sparse: %d (%d)", m_QueueIndices.Sparse, m_SparseIndex);
+        
         // Logical device
         vk::DeviceCreateInfo deviceCreateInfo;
         deviceCreateInfo.queueCreateInfoCount = deviceQueueInfos.size();
@@ -138,6 +142,13 @@ namespace CeltEngine
             CE_BREAK;
         }
         CE_TRACE("Created logical device: succesful");
+
+        // Retrieving queue handles
+        for (auto& queueInfo : deviceQueueInfos)
+        {
+            vk::Queue queue = m_Device.getQueue(queueInfo.queueFamilyIndex, 0);
+            m_Queues.push_back(queue);
+        }
     }
 
     void VulkanDevice::Shutdown()
