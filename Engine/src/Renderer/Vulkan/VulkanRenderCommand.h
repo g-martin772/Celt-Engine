@@ -1,13 +1,12 @@
 ﻿#pragma once
-#include "Renderer/Renderer.h"
+#include "Renderer/RenderCommand.h"
 
 namespace CeltEngine
 {
-    class OpenGLApi : public IRenderApi
+    class VulkanRenderCommand : public IRenderCommand
     {
     public:
         void Init() override;
         void Shutdown() override;
-    
     };
 }

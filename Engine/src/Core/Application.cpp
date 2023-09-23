@@ -3,6 +3,7 @@
 
 #include "Event.h"
 #include "Logger.h"
+#include "Renderer/RenderCommand.h"
 #include "Renderer/Renderer.h"
 
 namespace CeltEngine
@@ -25,7 +26,7 @@ namespace CeltEngine
         WindowConfig windowConfig;
         m_Window = std::make_shared<Window>(windowConfig);
 
-        Renderer::Init();
+        RenderCommand::Init();
     }
 
     Application::~Application()
@@ -73,7 +74,7 @@ namespace CeltEngine
         m_Running = false;
         OnShutDown();
 
-        Renderer::Shutdown();
+        RenderCommand::Shutdown();
         Logger::Shutdown();
     }
 
