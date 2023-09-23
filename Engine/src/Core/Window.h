@@ -21,6 +21,8 @@ namespace CeltEngine
         
         void OnUpdate();
         void OnEvent(Event& e);
+
+        void* GetNativeWindow() const;
     private:
         WindowConfig m_Config;
         GLFWwindow* m_Window;

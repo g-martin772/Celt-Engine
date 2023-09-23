@@ -42,6 +42,7 @@ namespace CeltEngine
         }
 
         const ApplicationConfig& GetSpecification() const { return m_Config; }
+        Shared<Window> GetWindow() const { return m_Window; }
 
     private:
         virtual void OnUpdate() = 0;

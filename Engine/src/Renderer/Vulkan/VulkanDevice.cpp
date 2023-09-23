@@ -24,7 +24,7 @@ namespace CeltEngine
         *resultIndex = queueInfos.size() - 1;
     }
     
-    void VulkanDevice::Init(DeviceRequirements requirements, VulkanInstance* instance)
+    void VulkanDevice::Init(const DeviceRequirements& requirements, VulkanInstance* instance)
     {
         m_Instance = instance;
 
@@ -92,6 +92,10 @@ namespace CeltEngine
                 if(requirements.Sparse && queueFamily.queueFlags & vk::QueueFlagBits::eSparseBinding) {
                     queueIndices.Sparse = queueFamilyIndex;
                 }
+
+                if(requirements.Present && device.getSurfaceSupportKHR(queueFamilyIndex, requirements.Surface)) {
+                    queueIndices.Present = queueFamilyIndex;
+                }
             }
             
             if (suitable && !m_PhysicalDevice) {
@@ -104,11 +108,12 @@ namespace CeltEngine
         CE_ASSERT(m_PhysicalDevice);
         CE_INFO("Picked %s", m_PhysicalDevice.getProperties().deviceName);
 
-        CE_ASSERT(m_QueueIndices.Graphics != -1);
-        CE_ASSERT(m_QueueIndices.Transfer != -1);
-        CE_ASSERT(m_QueueIndices.Compute != -1);
-        CE_ASSERT(m_QueueIndices.Sparse != -1);
-
+        CE_ASSERT(!requirements.Graphics || requirements.Graphics && m_QueueIndices.Graphics != -1);
+        CE_ASSERT(!requirements.Transfer || requirements.Transfer && m_QueueIndices.Transfer != -1);
+        CE_ASSERT(!requirements.Compute || requirements.Compute && m_QueueIndices.Compute != -1);
+        CE_ASSERT(!requirements.Sparse || requirements.Sparse && m_QueueIndices.Sparse != -1);
+        CE_ASSERT(!requirements.Present || requirements.Present && m_QueueIndices.Present != -1);
+ 
         std::vector<vk::DeviceQueueCreateInfo> deviceQueueInfos;
         if(requirements.Graphics)
             AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Graphics, &m_GraphicsIndex);
@@ -118,12 +123,15 @@ namespace CeltEngine
             AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Compute, &m_ComputeIndex);
         if(requirements.Sparse)
             AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Sparse, &m_SparseIndex);
+        if(requirements.Present)
+            AddQueueToCreateInfo(deviceQueueInfos, m_QueueIndices.Present, &m_PresentIndex);
 
         CE_TRACE("Selected Queue indices:");
         CE_TRACE("\t Graphics: %d (%d)", m_QueueIndices.Graphics, m_GraphicsIndex);
         CE_TRACE("\t Transfer: %d (%d)", m_QueueIndices.Transfer, m_TransferIndex);
         CE_TRACE("\t Compute: %d (%d)", m_QueueIndices.Compute, m_ComputeIndex);
         CE_TRACE("\t Sparse: %d (%d)", m_QueueIndices.Sparse, m_SparseIndex);
+        CE_TRACE("\t Present: %d (%d)", m_QueueIndices.Present, m_PresentIndex);
         
         // Logical device
         vk::DeviceCreateInfo deviceCreateInfo;

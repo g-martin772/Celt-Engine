@@ -20,5 +20,6 @@ namespace CeltEngine
     private:
         VulkanInstance m_Instance;
         VulkanDevice m_Device;
+        vk::SurfaceKHR m_Surface;
     };
 }

@@ -94,7 +94,7 @@ namespace CeltEngine
         }
         else if (Renderer::GetRenderApi() == RenderAPI::Vulkan)
         {
-            
+
         }
     }
 
@@ -113,5 +113,10 @@ namespace CeltEngine
 
     void Window::OnEvent(Event& e)
     {
+    }
+
+    void* Window::GetNativeWindow() const
+    {
+        return m_Window;
     }
 }
