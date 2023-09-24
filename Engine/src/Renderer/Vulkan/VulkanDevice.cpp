@@ -27,6 +27,7 @@ namespace CeltEngine
     void VulkanDevice::Init(const DeviceRequirements& requirements, VulkanInstance* instance)
     {
         m_Instance = instance;
+        m_Requirements = requirements;
 
         std::vector<vk::PhysicalDevice> devices = instance->GetInstance().enumeratePhysicalDevices();
 
@@ -158,6 +159,11 @@ namespace CeltEngine
             m_Queues.push_back(queue);
         }
 
+        // Get Swapchain Formats
+        m_SurfaceCapabilities = m_PhysicalDevice.getSurfaceCapabilitiesKHR(requirements.Surface);
+        m_SurfaceFormats =  m_PhysicalDevice.getSurfaceFormatsKHR(requirements.Surface);
+        m_SurfacePresentModes = m_PhysicalDevice.getSurfacePresentModesKHR(requirements.Surface);
+        
         // Get depth format
         std::vector<vk::Format> depthFormats = {
             vk::Format::eD32SfloatS8Uint,

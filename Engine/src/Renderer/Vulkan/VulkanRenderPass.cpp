@@ -96,7 +96,7 @@ namespace CeltEngine
         CE_TRACE("Created PrenderPass: succesful");
     }
 
-    void VulkanRenderPass::Shutdown()
+    void VulkanRenderPass::Destroy()
     {
         m_Device->GetDevice().destroyRenderPass(m_RenderPass);
     }

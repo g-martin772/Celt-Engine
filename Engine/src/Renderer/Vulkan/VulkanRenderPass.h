@@ -12,7 +12,7 @@ namespace CeltEngine
     public:
         void Init(::CeltEngine::VulkanDevice* device, glm::vec4 canvas, glm::vec4 clearValue, float depthClearValue = 1.0f, uint32_t
                   stencilClearValue = 0);
-        void Shutdown();
+        void Destroy();
 
         void Begin();
         void End();

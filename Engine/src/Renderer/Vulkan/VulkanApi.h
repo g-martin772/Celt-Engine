@@ -6,6 +6,7 @@
 #include "VulkanDevice.h"
 #include "VulkanInstance.h"
 #include "VulkanRenderPass.h"
+#include "VulkanSwapChain.h"
 #include "Renderer/Renderer.h"
 
 namespace CeltEngine
@@ -23,5 +24,6 @@ namespace CeltEngine
         VulkanDevice m_Device;
         vk::SurfaceKHR m_Surface;
         VulkanRenderPass m_MainRenderPass;
+        VulkanSwapChain m_SwapChain;
     };
 }

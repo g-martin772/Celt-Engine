@@ -33,13 +33,16 @@ namespace CeltEngine
         deviceRequirements.Surface = m_Surface;
         m_Device.Init(deviceRequirements, &m_Instance);
 
+        m_SwapChain.Init(&m_Device, { 100.0f, 100.0f }, 3);
+        
         // TODO: Provide useful values!
         m_MainRenderPass.Init(&m_Device, glm::vec4(0.0f, 0.0f, 100.0f, 100.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
     }
 
     void VulkanApi::Shutdown()
     {
-        m_MainRenderPass.Shutdown();
+        m_MainRenderPass.Destroy();
+        m_SwapChain.Destroy();
         m_Device.Shutdown();
         m_Instance.GetInstance().destroySurfaceKHR(m_Surface);
         m_Instance.Shutdown();
