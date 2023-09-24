@@ -31,6 +31,7 @@ namespace CeltEngine
         vk::Device GetDevice() const { return m_Device; }
         vk::PhysicalDevice GetPhysicalDevice() const { return m_PhysicalDevice; }
         VulkanQueueIndices GetQueueIndices() const { return m_QueueIndices; }
+        vk::Format GetDepthFormat() const { return m_DepthFormat; }
 
         vk::Queue GetGraphicsQueue() const { return m_Queues[m_GraphicsIndex]; }
         vk::Queue GetTransferQueue() const { return m_Queues[m_TransferIndex]; }
@@ -45,6 +46,7 @@ namespace CeltEngine
         std::vector<vk::Queue> m_Queues;
         uint32_t m_GraphicsIndex = 0, m_TransferIndex = 0, m_ComputeIndex = 0,
             m_SparseIndex = 0, m_PresentIndex = 0;
+        vk::Format m_DepthFormat = vk::Format::eD24UnormS8Uint;
 
     };
 }

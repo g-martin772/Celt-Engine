@@ -157,6 +157,27 @@ namespace CeltEngine
             vk::Queue queue = m_Device.getQueue(queueInfo.queueFamilyIndex, 0);
             m_Queues.push_back(queue);
         }
+
+        // Get depth format
+        std::vector<vk::Format> depthFormats = {
+            vk::Format::eD32SfloatS8Uint,
+            vk::Format::eD32Sfloat,
+            vk::Format::eD24UnormS8Uint,
+            vk::Format::eD16UnormS8Uint,
+            vk::Format::eD16Unorm
+        };
+
+        auto flags = vk::FormatFeatureFlagBits::eDepthStencilAttachment;
+        for (auto& depthFormat : depthFormats) {
+            auto props = m_PhysicalDevice.getFormatProperties(depthFormat);
+            if((props.linearTilingFeatures & flags) == flags) {
+                m_DepthFormat = depthFormat;
+                break;
+            } else if ((props.optimalTilingFeatures & flags) == flags) {
+                m_DepthFormat = depthFormat;
+                break;
+            }
+        }
     }
 
     void VulkanDevice::Shutdown()
