@@ -5,6 +5,7 @@
 
 #include "VulkanDevice.h"
 #include "VulkanInstance.h"
+#include "VulkanRenderPass.h"
 #include "Renderer/Renderer.h"
 
 namespace CeltEngine
@@ -21,5 +22,6 @@ namespace CeltEngine
         VulkanInstance m_Instance;
         VulkanDevice m_Device;
         vk::SurfaceKHR m_Surface;
+        VulkanRenderPass m_MainRenderPass;
     };
 }
