@@ -3,6 +3,7 @@
 #include <vulkan/vulkan.hpp>
 #include <glm/glm.hpp>
 
+#include "VulkanCommandBuffer.h"
 #include "VulkanDevice.h"
 #include "VulkanInstance.h"
 #include "VulkanRenderPass.h"
@@ -25,5 +26,7 @@ namespace CeltEngine
         vk::SurfaceKHR m_Surface;
         VulkanRenderPass m_MainRenderPass;
         VulkanSwapChain m_SwapChain;
+        VulkanCommandPool m_GraphicsCommandPool;
+        Shared<VulkanCommandBuffer> m_MainCommandBuffer;
     };
 }

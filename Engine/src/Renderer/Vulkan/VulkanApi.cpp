@@ -33,6 +33,9 @@ namespace CeltEngine
         deviceRequirements.Surface = m_Surface;
         m_Device.Init(deviceRequirements, &m_Instance);
 
+        m_GraphicsCommandPool.Init(&m_Device, m_Device.GetQueueIndices().Graphics);
+        m_MainCommandBuffer = m_GraphicsCommandPool.AllocateCommandBuffer();
+        
         m_SwapChain.Init(&m_Device, { 100.0f, 100.0f }, 3);
         
         // TODO: Provide useful values!
@@ -43,6 +46,8 @@ namespace CeltEngine
     {
         m_MainRenderPass.Destroy();
         m_SwapChain.Destroy();
+        m_MainCommandBuffer->Free();
+        m_GraphicsCommandPool.Destroy();
         m_Device.Shutdown();
         m_Instance.GetInstance().destroySurfaceKHR(m_Surface);
         m_Instance.Shutdown();
