@@ -152,11 +152,9 @@ namespace CeltEngine
         spec.Format = m_Device->GetDepthFormat();
         spec.CreateView = true;
         spec.ViewAspectFlags = vk::ImageAspectFlagBits::eDepth;
-        spec.Depth = 1;
         spec.MipLevels = 1;
         spec.ArrayLayers = 1;
         spec.Samples = vk::SampleCountFlagBits::e1;
-        spec.ExclusiveSharing = false;
         m_DepthImage.Create(spec, m_Device);
     }
 

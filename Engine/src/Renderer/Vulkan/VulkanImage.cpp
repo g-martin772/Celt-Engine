@@ -7,7 +7,7 @@
 
 namespace CeltEngine
 {
-    void VulkanImage::Create(const VulkanImageSpec& spec, VulkanDevice* device)
+    void VulkanImage2D::Create(const VulkanImageSpec& spec, VulkanDevice* device)
     {
         m_Size = spec.Size;
         m_Device = device;
@@ -16,7 +16,7 @@ namespace CeltEngine
         imageInfo.imageType = vk::ImageType::e2D;
         imageInfo.extent.width = static_cast<uint32_t>(spec.Size.x);
         imageInfo.extent.height = static_cast<uint32_t>(spec.Size.y);
-        imageInfo.extent.depth = spec.Depth;
+        imageInfo.extent.depth = 1;
         imageInfo.mipLevels = spec.MipLevels;
         imageInfo.arrayLayers = spec.ArrayLayers;
         imageInfo.format = spec.Format;
@@ -24,7 +24,7 @@ namespace CeltEngine
         imageInfo.initialLayout = vk::ImageLayout::eUndefined;
         imageInfo.usage = spec.Usage;
         imageInfo.samples = vk::SampleCountFlagBits::e1;
-        imageInfo.sharingMode = spec.ExclusiveSharing ? vk::SharingMode::eExclusive : vk::SharingMode::eConcurrent;
+        imageInfo.sharingMode = vk::SharingMode::eExclusive;
 
         try {
             m_Image = m_Device->GetDevice().createImage(imageInfo);
@@ -59,15 +59,14 @@ namespace CeltEngine
 
         if(spec.CreateView) {
             VulkanImageViewSpec viewSpec;
-            viewSpec.Type = spec.ViewType;
+            viewSpec.Type = vk::ImageViewType::e2D;
             viewSpec.Format = spec.Format;
             viewSpec.AspectFlags = spec.ViewAspectFlags;
-            viewSpec.ArrayLayers = spec.ArrayLayers;
             CreateImageView(viewSpec);
         }
     }
 
-    void VulkanImage::Destroy()
+    void VulkanImage2D::Destroy()
     {
         for(const auto& view : m_ImageViews)
             m_Device->GetDevice().destroyImageView(view);
@@ -75,16 +74,17 @@ namespace CeltEngine
         m_Device->GetDevice().destroyImage(m_Image);
     }
 
-    uint32_t VulkanImage::CreateImageView(const VulkanImageViewSpec& spec)
+    uint32_t VulkanImage2D::CreateImageView(const VulkanImageViewSpec& spec)
     {
         vk::ImageViewCreateInfo createInfo = {};
         createInfo.image = m_Image;
         createInfo.viewType = spec.Type;
         createInfo.format = spec.Format;
         createInfo.subresourceRange.aspectMask = spec.AspectFlags;
-        createInfo.subresourceRange.baseMipLevel = spec.BaseMipLevel;
-        createInfo.subresourceRange.levelCount = spec.ArrayLayers;
-        createInfo.subresourceRange.baseArrayLayer = spec.BaseArrayLayer;
+        createInfo.subresourceRange.baseMipLevel = 0;
+        createInfo.subresourceRange.levelCount = 1;
+        createInfo.subresourceRange.baseArrayLayer = 0;
+        createInfo.subresourceRange.layerCount = 1;
 
         try {
             m_ImageViews.push_back(m_Device->GetDevice().createImageView(createInfo));

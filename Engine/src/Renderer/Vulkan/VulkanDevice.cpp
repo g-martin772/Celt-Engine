@@ -142,8 +142,12 @@ namespace CeltEngine
         vk::PhysicalDeviceFeatures deviceFeatures;
         deviceCreateInfo.pEnabledFeatures = &deviceFeatures;
 
-        // Set instance extensions on device level?
-
+        std::vector<const char*> deviceExtensions = {
+            "VK_KHR_swapchain"
+        };
+        deviceCreateInfo.enabledExtensionCount = deviceExtensions.size();
+        deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions.data();
+        
         try {
             m_Device = m_PhysicalDevice.createDevice(deviceCreateInfo);
         } catch (const vk::SystemError& err) {

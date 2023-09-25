@@ -14,7 +14,6 @@ namespace CeltEngine
         vk::ImageViewType Type = vk::ImageViewType::e2D;
         vk::Format Format = vk::Format::eR8G8B8A8Unorm;
         vk::ImageAspectFlags AspectFlags = vk::ImageAspectFlagBits::eColor;
-        uint32_t BaseMipLevel = 0, BaseArrayLayer = 0, ArrayLayers = 1;
     };
     
     struct VulkanImageSpec
@@ -25,14 +24,12 @@ namespace CeltEngine
         vk::MemoryPropertyFlags MemoryProperties;
         vk::Format Format;
         bool CreateView;
-        vk::ImageViewType ViewType = vk::ImageViewType::e2D;
         vk::ImageAspectFlags ViewAspectFlags = vk::ImageAspectFlagBits::eColor;
-        uint32_t Depth = 1, MipLevels = 4, ArrayLayers = 1;
+        uint32_t MipLevels = 1, ArrayLayers = 1;
         vk::SampleCountFlags Samples;
-        bool ExclusiveSharing = true;
     };
     
-    class VulkanImage
+    class VulkanImage2D
     {
     public:
         void Create(const VulkanImageSpec& spec, VulkanDevice* device);

@@ -36,6 +36,6 @@ namespace CeltEngine
         vk::SwapchainKHR m_SwapChain;
         vk::Format m_Format = vk::Format::eB8G8R8A8Unorm;
         vk::ColorSpaceKHR m_ColorSpace = vk::ColorSpaceKHR::eSrgbNonlinear;
-        VulkanImage m_DepthImage;
+        VulkanImage2D m_DepthImage;
     };
 }
