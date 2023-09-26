@@ -35,4 +35,24 @@ namespace CeltEngine
         s_Api->Shutdown();
         delete s_Api;
     }
+
+    bool RenderCommand::BeginFrame()
+    {
+        return s_Api->BeginFrame();
+    }
+
+    void RenderCommand::EndFrame()
+    {
+        s_Api->EndFrame();
+    }
+
+    void RenderCommand::Resize(glm::vec2 newSize)
+    {
+        s_Api->Resize(newSize);
+    }
+
+    void RenderCommand::SetClearColor(glm::vec4 color)
+    {
+        s_Api->SetClearColor(color);
+    }
 }

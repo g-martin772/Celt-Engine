@@ -4,13 +4,17 @@
 #include <vulkan/vulkan.hpp>
 
 #include "VulkanDevice.h"
+#include "VulkanSwapChain.h"
 
 namespace CeltEngine
 {
     class VulkanRenderPass
     {
     public:
-        void Init(::CeltEngine::VulkanDevice* device, glm::vec4 canvas, glm::vec4 clearValue, float depthClearValue = 1.0f, uint32_t
+        void Init(::CeltEngine::VulkanDevice* device, ::CeltEngine::VulkanSwapChain* swapchain, glm::vec4 canvas, glm::vec4 clearValue =
+                  {
+                      0.0f, 0.0f, 0.0f, 1.0f
+                  }, float depthClearValue = 1.0f, uint32_t
                   stencilClearValue = 0);
         void Destroy();
 

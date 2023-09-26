@@ -5,6 +5,7 @@
 
 #include "VulkanCommandBuffer.h"
 #include "VulkanDevice.h"
+#include "VulkanFrameBuffer.h"
 #include "VulkanInstance.h"
 #include "VulkanRenderPass.h"
 #include "VulkanSwapChain.h"
@@ -18,6 +19,8 @@ namespace CeltEngine
         void Init();
         void Shutdown();
 
+        void OnResize(glm::vec2 newSize);
+
         VulkanInstance GetInstance() const { return m_Instance; }
         VulkanDevice GetDevice() const { return m_Device; }
     private:
@@ -28,5 +31,7 @@ namespace CeltEngine
         VulkanSwapChain m_SwapChain;
         VulkanCommandPool m_GraphicsCommandPool;
         Shared<VulkanCommandBuffer> m_MainCommandBuffer;
+        VulkanFrameBuffer m_MainFrameBuffer;
+        friend class VulkanRenderCommand;
     };
 }

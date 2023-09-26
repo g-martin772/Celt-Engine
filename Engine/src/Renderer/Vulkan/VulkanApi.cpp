@@ -35,16 +35,18 @@ namespace CeltEngine
 
         m_GraphicsCommandPool.Init(&m_Device, m_Device.GetQueueIndices().Graphics);
         m_MainCommandBuffer = m_GraphicsCommandPool.AllocateCommandBuffer();
+
+        glm::vec2 size = Application::Current()->GetWindow()->GetSize();
+        m_SwapChain.Init(&m_Device, size, 3);
         
-        m_SwapChain.Init(&m_Device, { 100.0f, 100.0f }, 3);
-        
-        // TODO: Provide useful values!
-        m_MainRenderPass.Init(&m_Device, glm::vec4(0.0f, 0.0f, 100.0f, 100.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+        m_MainRenderPass.Init(&m_Device, &m_SwapChain, glm::vec4(0.0f, 0.0f, size.x, size.y));
+        m_MainFrameBuffer.CreateFromSwapchain(&m_Device, &m_SwapChain, &m_MainRenderPass);
     }
 
     void VulkanApi::Shutdown()
     {
         m_Device.WaitIdle();
+        m_MainFrameBuffer.Destroy();
         m_MainRenderPass.Destroy();
         m_SwapChain.Destroy();
         m_MainCommandBuffer->Free();

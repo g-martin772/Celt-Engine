@@ -16,9 +16,12 @@
         "_CRT_SECURE_NO_WARNINGS"
     }
     
+    vulkanSDK = os.getenv("VULKAN_SDK")
+    
     includedirs {
         "src",
         "%{wks.location}/Engine/src",
+        vulkanSDK .. "/Include"
     }
     
     links {

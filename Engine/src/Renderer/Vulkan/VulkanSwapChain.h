@@ -22,6 +22,17 @@ namespace CeltEngine
 
         void Update(glm::vec2 size);
 
+        std::vector<vk::Image> GetImages() const { return m_Images; }
+        std::vector<vk::ImageView> GetImageViews() const { return m_Views; }
+        vk::ImageView GetDepthImageView() const { return m_DepthImage.GetImageView(0); }
+        vk::Extent2D GetExtent() const { return m_Extent; }
+
+        vk::Format GetImageFormat() const { return m_Format; }
+        vk::Format GetDepthImageFormat() const { return m_DepthFormat; }
+
+        uint32_t GetImageCount() const { return m_Images.size(); }
+        uint32_t GetCurrentImageIndex() const { return m_CurrentFrame; }
+
         vk::SwapchainKHR GetSwapChain() const { return m_SwapChain; }
     private:
         void CreateSwapChain();
@@ -34,7 +45,7 @@ namespace CeltEngine
         std::vector<vk::ImageView> m_Views;
         VulkanDevice* m_Device = nullptr;
         vk::SwapchainKHR m_SwapChain;
-        vk::Format m_Format = vk::Format::eB8G8R8A8Unorm;
+        vk::Format m_Format = vk::Format::eB8G8R8A8Unorm, m_DepthFormat = vk::Format::eD32Sfloat;
         vk::ColorSpaceKHR m_ColorSpace = vk::ColorSpaceKHR::eSrgbNonlinear;
         VulkanImage2D m_DepthImage;
     };

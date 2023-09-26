@@ -2,11 +2,19 @@
 #include "VulkanRenderPass.h"
 
 #include "VulkanApi.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
 #include "Core/Logger.h"
 
 namespace CeltEngine
 {
-    void VulkanRenderPass::Init(VulkanDevice* device, glm::vec4 canvas, glm::vec4 clearValue,
+    void VulkanRenderPass::Init(VulkanDevice* device, VulkanSwapChain* swapchain, glm::vec4 canvas, glm::vec4 clearValue,
         float depthClearValue, uint32_t stencilClearValue)
     {
         m_Canvas = canvas;
@@ -24,7 +32,7 @@ namespace CeltEngine
 
         // Color Attachment
         vk::AttachmentDescription colorAttachment = {};
-        colorAttachment.format = vk::Format::eB8G8R8A8Unorm; // TODO: Get image format
+        colorAttachment.format = swapchain->GetImageFormat();
         colorAttachment.samples = vk::SampleCountFlagBits::e1;
         colorAttachment.loadOp = vk::AttachmentLoadOp::eClear;
         colorAttachment.storeOp = vk::AttachmentStoreOp::eStore;
@@ -43,7 +51,7 @@ namespace CeltEngine
 
         // Depth Attachment
         vk::AttachmentDescription depthAttachment = {};
-        depthAttachment.format = vk::Format::eD32Sfloat; // TODO: Get image format
+        depthAttachment.format = swapchain->GetDepthImageFormat();
         depthAttachment.samples = vk::SampleCountFlagBits::e1;
         depthAttachment.loadOp = vk::AttachmentLoadOp::eClear;
         depthAttachment.storeOp = vk::AttachmentStoreOp::eDontCare;

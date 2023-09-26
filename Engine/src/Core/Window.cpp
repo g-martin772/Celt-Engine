@@ -115,6 +115,12 @@ namespace CeltEngine
     {
     }
 
+    glm::vec2 Window::GetSize()
+    {
+        glfwGetWindowSize(m_Window, &m_Config.Width, &m_Config.Height);
+        return { m_Config.Width, m_Config.Height };
+    }
+
     void* Window::GetNativeWindow() const
     {
         return m_Window;

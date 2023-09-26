@@ -1,4 +1,7 @@
 ﻿#pragma once
+
+#include <glm/glm.hpp>
+
 #include "Core.h"
 #include "Event.h"
 
@@ -21,6 +24,8 @@ namespace CeltEngine
         
         void OnUpdate();
         void OnEvent(Event& e);
+
+        glm::vec2 GetSize();
 
         void* GetNativeWindow() const;
     private:

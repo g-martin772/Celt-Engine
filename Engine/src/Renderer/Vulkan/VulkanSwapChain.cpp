@@ -9,9 +9,9 @@ namespace CeltEngine
 {
     
     
-    void VulkanSwapChain::Init(::CeltEngine::VulkanDevice* device, const glm::vec2 size, uint32_t framesInFlight)
+    void VulkanSwapChain::Init(VulkanDevice* device, const glm::vec2 size, uint32_t framesInFlight)
     {
-        m_Size = size;
+        m_Extent = vk::Extent2D(size.x, size.y);
         m_Device = device;
         m_FramesInFlight = framesInFlight;
 
@@ -54,13 +54,12 @@ namespace CeltEngine
     void VulkanSwapChain::Update(glm::vec2 size)
     {
         DestroySwapChain();
+        m_Extent = vk::Extent2D(size.x, size.y);
         CreateSwapChain();
     }
 
     void VulkanSwapChain::CreateSwapChain()
     {
-        vk::Extent2D m_Extent = { static_cast<uint32_t>(m_Size.x), static_cast<uint32_t>(m_Size.y) };
-
         bool found = false;
         for (const auto& format :  m_Device->GetSurfaceFormats()) {
             if(format.format == vk::Format::eB8G8R8A8Unorm && format.colorSpace == vk::ColorSpaceKHR::eSrgbNonlinear) {
@@ -144,12 +143,14 @@ namespace CeltEngine
             }
         }
 
+        m_DepthFormat = m_Device->GetDepthFormat();
+
         VulkanImageSpec spec;
         spec.Size = { m_Extent.width, m_Extent.height };
         spec.Tiling = vk::ImageTiling::eOptimal;
         spec.Usage = vk::ImageUsageFlagBits::eDepthStencilAttachment;
         spec.MemoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-        spec.Format = m_Device->GetDepthFormat();
+        spec.Format = m_DepthFormat;
         spec.CreateView = true;
         spec.ViewAspectFlags = vk::ImageAspectFlagBits::eDepth;
         spec.MipLevels = 1;

@@ -18,4 +18,21 @@ namespace CeltEngine
         s_Api->Shutdown();
         delete s_Api;
     }
+
+    bool VulkanRenderCommand::BeginFrame()
+    {
+        return true;
+    }
+
+    void VulkanRenderCommand::EndFrame()
+    {
+    }
+
+    void VulkanRenderCommand::Resize(glm::vec2 newSize)
+    {
+    }
+
+    void VulkanRenderCommand::SetClearColor(glm::vec4 color)
+    {
+    }
 }
