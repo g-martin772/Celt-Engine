@@ -39,7 +39,7 @@ namespace CeltEngine
         }
     }
 
-    void VulkanCommandBuffer::Submit(vk::Queue target) const // TODO: Add sync objects
+    void VulkanCommandBuffer::Submit(vk::Queue target) // TODO: Add sync objects
     {
         vk::SubmitInfo submitInfo;
         submitInfo.commandBufferCount = 1;
@@ -59,9 +59,12 @@ namespace CeltEngine
         }
     }
 
-    void VulkanCommandBuffer::Free() const
+    void VulkanCommandBuffer::Free()
     {
-        m_Device->GetDevice().freeCommandBuffers(m_CommandPool, 1, &m_CommandBuffer);
+        if(m_Allocated) {
+            m_Device->GetDevice().freeCommandBuffers(m_CommandPool, 1, &m_CommandBuffer);
+            m_Allocated = false;
+        }
     }
 
     void VulkanCommandPool::Init(VulkanDevice* device, const uint32_t queueFamilyIndex, const vk::CommandPoolCreateFlags flags)
@@ -93,6 +96,7 @@ namespace CeltEngine
         commandBuffer->m_CommandPool = m_CommandPool;
         commandBuffer->m_SimultaneousUse = simultaneousUse;
         commandBuffer->m_RenderPassContinue = renderPassContinue;
+        commandBuffer->m_Allocated = true;
 
         vk::CommandBufferAllocateInfo allocateInfo;
         allocateInfo.level = vk::CommandBufferLevel::ePrimary;

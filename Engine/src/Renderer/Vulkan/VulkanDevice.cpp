@@ -194,4 +194,9 @@ namespace CeltEngine
     {
         m_Device.destroy();
     }
+
+    void VulkanDevice::WaitIdle()
+    {
+        m_Device.waitIdle();
+    }
 }

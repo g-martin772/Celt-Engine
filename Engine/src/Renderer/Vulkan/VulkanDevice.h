@@ -27,6 +27,8 @@ namespace CeltEngine
     public:
         void Init(const DeviceRequirements& requirements, VulkanInstance* instance);
         void Shutdown();
+
+        void WaitIdle();
         
         vk::Device GetDevice() const { return m_Device; }
         vk::PhysicalDevice GetPhysicalDevice() const { return m_PhysicalDevice; }

@@ -44,6 +44,7 @@ namespace CeltEngine
 
     void VulkanApi::Shutdown()
     {
+        m_Device.WaitIdle();
         m_MainRenderPass.Destroy();
         m_SwapChain.Destroy();
         m_MainCommandBuffer->Free();
