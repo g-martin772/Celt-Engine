@@ -23,7 +23,7 @@ namespace CeltEngine
         DestroySwapChain();
     }
 
-    void VulkanSwapChain::AcquireNextImageIndex(vk::Semaphore semaphore, vk::Fence fence, uint64_t timeout)
+    void VulkanSwapChain::AcquireNextImage(vk::Semaphore semaphore, vk::Fence fence, uint64_t timeout)
     {
         const vk::Result result = m_Device->GetDevice().
             acquireNextImageKHR(m_SwapChain, timeout, semaphore, fence, &m_CurrentFrame);

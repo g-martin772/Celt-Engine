@@ -2,6 +2,7 @@
 
 #include "Core/Entrypoint.h"
 #include "Core/Logger.h"
+#include "Renderer/RenderCommand.h"
 
 class Sandbox : public CeltEngine::Application
 {
@@ -15,6 +16,8 @@ public:
 private:
     void OnUpdate() override
     {
+        CeltEngine::RenderCommand::BeginFrame();
+        CeltEngine::RenderCommand::EndFrame();
     }
 
     void OnShutDown() override

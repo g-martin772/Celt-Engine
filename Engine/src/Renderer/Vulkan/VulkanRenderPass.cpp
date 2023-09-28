@@ -10,6 +10,10 @@
 #include "Core/Application.h"
 #include "Core/Application.h"
 #include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
+#include "Core/Application.h"
 #include "Core/Logger.h"
 
 namespace CeltEngine
@@ -104,18 +108,34 @@ namespace CeltEngine
         CE_TRACE("Created PrenderPass: succesful");
     }
 
-    void VulkanRenderPass::Destroy()
+    void VulkanRenderPass::Destroy() const
     {
         m_Device->GetDevice().destroyRenderPass(m_RenderPass);
     }
 
-    void VulkanRenderPass::Begin()
+    void VulkanRenderPass::Begin(vk::Framebuffer framebuffer, glm::vec2 size, vk::CommandBuffer commandBuffer) const
     {
-        // TODO: Implement RenderPass::Begin()
+        vk::RenderPassBeginInfo beginInfo;
+        beginInfo.renderPass = m_RenderPass;
+        beginInfo.framebuffer = framebuffer;
+        beginInfo.renderArea.offset.x = 0;
+        beginInfo.renderArea.offset.y = 0;
+        beginInfo.renderArea.extent.width = size.x;
+        beginInfo.renderArea.extent.height = size.y;
+
+        const vk::ClearValue clearValues[2] = {
+            vk::ClearValue(vk::ClearColorValue(std::array<float, 4>{ m_ClearValue.r, m_ClearValue.g, m_ClearValue.b, m_ClearValue.a })),
+            vk::ClearValue(vk::ClearDepthStencilValue(m_DepthClearValue, m_StencilClearValue))
+        };
+
+        beginInfo.clearValueCount = 2;
+        beginInfo.pClearValues = clearValues;
+
+        commandBuffer.beginRenderPass(beginInfo, vk::SubpassContents::eInline);
     }
 
-    void VulkanRenderPass::End()
+    void VulkanRenderPass::End(vk::CommandBuffer commandBuffer)
     {
-        // TODO: Implement RenderPass::End()
+        commandBuffer.endRenderPass();
     }
 }

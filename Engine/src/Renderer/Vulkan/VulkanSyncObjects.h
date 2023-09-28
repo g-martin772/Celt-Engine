@@ -9,8 +9,8 @@ namespace CeltEngine
     class VulkanFence
     {
     public:
-        void Create(VulkanDevice* device, bool isSignaled = true);
-        void Destroy() const;
+        VulkanFence(VulkanDevice* device, bool isSignaled = true);
+        ~VulkanFence();
 
         void Reset() const;
         void Wait() const;
@@ -25,8 +25,8 @@ namespace CeltEngine
     class VulkanSemaphore
     {
     public:
-        void Create(VulkanDevice* device);
-        void Destroy() const;
+        VulkanSemaphore(VulkanDevice* device);
+        ~VulkanSemaphore();
 
         vk::Semaphore GetSemaphore() const { return m_Semaphore; }
     private:

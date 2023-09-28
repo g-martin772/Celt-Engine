@@ -6,7 +6,7 @@
 
 namespace CeltEngine
 {
-    void VulkanFence::Create(VulkanDevice* device, bool isSignaled)
+    VulkanFence::VulkanFence(VulkanDevice* device, bool isSignaled)
     {
         m_Device = device;
         
@@ -22,7 +22,7 @@ namespace CeltEngine
         CE_TRACE("Created vulkan fence: succesful");
     }
 
-    void VulkanFence::Destroy() const
+    VulkanFence::~VulkanFence()
     {
         m_Device->GetDevice().destroyFence(m_Fence);
     }
@@ -47,7 +47,7 @@ namespace CeltEngine
         Reset();
     }
 
-    void VulkanSemaphore::Create(VulkanDevice* device)
+    VulkanSemaphore::VulkanSemaphore(VulkanDevice* device)
     {
         m_Device = device;
 
@@ -63,7 +63,7 @@ namespace CeltEngine
         CE_TRACE("Created vulkan semaphore: succesful");
     }
 
-    void VulkanSemaphore::Destroy() const
+    VulkanSemaphore::~VulkanSemaphore()
     {
         m_Device->GetDevice().destroySemaphore(m_Semaphore);
     }

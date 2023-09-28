@@ -11,15 +11,11 @@ namespace CeltEngine
     class VulkanRenderPass
     {
     public:
-        void Init(::CeltEngine::VulkanDevice* device, ::CeltEngine::VulkanSwapChain* swapchain, glm::vec4 canvas, glm::vec4 clearValue =
-                  {
-                      0.0f, 0.0f, 0.0f, 1.0f
-                  }, float depthClearValue = 1.0f, uint32_t
-                  stencilClearValue = 0);
-        void Destroy();
+        void Init(VulkanDevice* device, VulkanSwapChain* swapchain, glm::vec4 canvas, glm::vec4 clearValue = { 0.0f, 0.0f, 0.0f, 1.0f }, float depthClearValue = 1.0f, uint32_t stencilClearValue = 0);
+        void Destroy() const;
 
-        void Begin();
-        void End();
+        void Begin(::vk::Framebuffer framebuffer, glm::vec2 size, vk::CommandBuffer commandBuffer) const;
+        void End(vk::CommandBuffer commandBuffer);
 
         vk::RenderPass GetRenderPass() const { return m_RenderPass; }
     private:

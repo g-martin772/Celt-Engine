@@ -17,7 +17,7 @@ namespace CeltEngine
         void Init(VulkanDevice* device, glm::vec2 size, uint32_t framesInFlight = 2);
         void Destroy();
 
-        void AcquireNextImageIndex(vk::Semaphore semaphore, vk::Fence fence, uint64_t timeout = UINT64_MAX);
+        void AcquireNextImage(vk::Semaphore semaphore, vk::Fence fence, uint64_t timeout = UINT64_MAX);
         void Present(vk::Queue graphicsQueue, vk::Queue presentQueue, vk::Semaphore waitSemaphore);
 
         void Update(glm::vec2 size);
